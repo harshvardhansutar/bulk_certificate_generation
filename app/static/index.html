@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Certificate Generator | Pro Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h2>CertiFlow</h2>
+                    <span>Bulk Generator API</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="create-tab">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    New Bulk Job
+                </button>
+                <button class="nav-item" data-tab="active-tab">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Job Monitor
+                </button>
+                <button class="nav-item" data-tab="verify-tab">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Verify Credential
+                </button>
+                <button class="nav-item" data-tab="history-tab">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Job History
+                </button>
+            </nav>
+
+            <div class="api-links">
+                <a href="/docs" target="_blank" class="api-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Swagger Docs
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="topbar">
+                <div>
+                    <h1 id="page-title">Generate Certificates in Bulk</h1>
+                    <p class="subtitle">Fault-tolerant background certificate generation engine</p>
+                </div>
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span>API v1.0 • Connected</span>
+                </div>
+            </header>
+
+            <!-- TAB 1: CREATE JOB -->
+            <section id="create-tab" class="tab-pane active">
+                <div class="card-grid">
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h3>1. Event & Organization Details</h3>
+                            <p>Configure template parameters and credentials metadata</p>
+                        </div>
+                        <form id="bulk-job-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="event-name">Event / Course Name *</label>
+                                    <input type="text" id="event-name" required value="Cloud Architecture Bootcamp 2026" placeholder="e.g. AI Mastery Workshop">
+                                </div>
+                                <div class="form-group">
+                                    <label for="issuer-name">Issuing Organization *</label>
+                                    <input type="text" id="issuer-name" required value="Google Developer Experts Community" placeholder="e.g. Acme Tech Institute">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="issue-date">Issue Date</label>
+                                    <input type="text" id="issue-date" value="October 07, 2026" placeholder="e.g. October 15, 2026">
+                                </div>
+                                <div class="form-group">
+                                    <label for="template-title">Certificate Title</label>
+                                    <input type="text" id="template-title" value="Certificate of Completion" placeholder="e.g. Certificate of Excellence">
+                                </div>
+                            </div>
+
+                            <div class="card-header" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                                <div class="flex-between">
+                                    <div>
+                                        <h3>2. Recipients</h3>
+                                        <p>Add recipients in JSON or load presets</p>
+                                    </div>
+                                    <div class="preset-buttons">
+                                        <button type="button" id="load-sample-btn" class="btn btn-sm btn-ghost">Load 5 Valid</button>
+                                        <button type="button" id="load-mixed-btn" class="btn btn-sm btn-ghost" title="Tests fault-isolation with 1 intentional failure">Load 6 (1 Fails)</button>
+                                        <button type="button" id="load-bulk-btn" class="btn btn-sm btn-ghost">Load 25 Bulk</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="recipients-json">Recipient Payload (JSON Array)</label>
+                                <textarea id="recipients-json" rows="9" class="code-editor" required></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" id="submit-btn" class="btn btn-primary btn-lg">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                    Launch Bulk Generation Job
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Side Info & Template Preview Info -->
+                    <div class="card info-card">
+                        <div class="card-header">
+                            <h3>Template Architecture</h3>
+                            <p>Predefined high-res vector PDF template</p>
+                        </div>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">📐</div>
+                                <div>
+                                    <h4>Vector Graphics Layout</h4>
+                                    <p>High-resolution Landscape A4 (841 × 595 pt) ReportLab vector layout suitable for printing.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🛡️</div>
+                                <div>
+                                    <h4>Dynamic QR & Verification</h4>
+                                    <p>Each certificate embeds an auto-generated QR code linked directly to the live verification endpoint.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🔒</div>
+                                <div>
+                                    <h4>Cryptographic Checksum</h4>
+                                    <p>Computes SHA-256 integrity hash for each file to ensure anti-tamper authenticity.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">⚡</div>
+                                <div>
+                                    <h4>Isolated Failure Resilience</h4>
+                                    <p>If an individual certificate fails (e.g., malformed data), the job captures the error and completes remaining recipients.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ACTIVE JOB MONITOR -->
+            <section id="active-tab" class="tab-pane">
+                <div class="card job-status-card">
+                    <div class="flex-between align-center">
+                        <div>
+                            <span class="badge" id="job-status-badge">PENDING</span>
+                            <h2 id="job-title-display" style="margin-top: 0.5rem;">No Active Job Selected</h2>
+                            <p id="job-subtitle-display" class="text-muted">Submit a job from the New Bulk Job tab or select from Job History.</p>
+                        </div>
+                        <div class="actions-right" id="job-actions-wrapper" style="display: none;">
+                            <a id="download-zip-btn" href="#" class="btn btn-success" download>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download All (.ZIP)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-section" id="progress-container" style="display: none;">
+                        <div class="progress-labels">
+                            <span id="progress-percent">0%</span>
+                            <span id="progress-ratio">0 / 0 Processed</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Counters -->
+                    <div class="stats-grid" id="stats-grid" style="display: none;">
+                        <div class="stat-box">
+                            <span class="stat-num" id="stat-total">0</span>
+                            <span class="stat-label">Total Recipients</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num text-success" id="stat-success">0</span>
+                            <span class="stat-label">Generated Successfully</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num text-danger" id="stat-failed">0</span>
+                            <span class="stat-label">Failed / Errored</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num" id="stat-job-id" style="font-size: 1rem; font-family: 'JetBrains Mono', monospace;">-</span>
+                            <span class="stat-label">Job UUID</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificates Table -->
+                <div class="card" id="certificates-table-card" style="display: none; margin-top: 1.5rem;">
+                    <div class="card-header flex-between">
+                        <div>
+                            <h3>Recipients & Certificates Breakdown</h3>
+                            <p>Individual generation statuses, error details, and download links</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Recipient</th>
+                                    <th>Email</th>
+                                    <th>Certificate Code</th>
+                                    <th>Status</th>
+                                    <th>Details / Error</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certificates-tbody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: VERIFY CREDENTIAL -->
+            <section id="verify-tab" class="tab-pane">
+                <div class="card verify-card">
+                    <div class="card-header">
+                        <h3>Credential Verification Portal</h3>
+                        <p>Verify certificate authenticity via unique Verification ID or QR code</p>
+                    </div>
+                    <form id="verify-form" class="verify-form">
+                        <div class="form-group flex-1">
+                            <label for="verify-code-input">Enter Certificate Code</label>
+                            <input type="text" id="verify-code-input" placeholder="e.g. CERT-B71A9F42" required style="font-family: 'JetBrains Mono', monospace;">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Verify Authenticity</button>
+                    </form>
+
+                    <div id="verify-result" class="verify-result" style="display: none;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: JOB HISTORY -->
+            <section id="history-tab" class="tab-pane">
+                <div class="card">
+                    <div class="card-header flex-between">
+                        <div>
+                            <h3>Job History</h3>
+                            <p>All previously submitted bulk generation jobs</p>
+                        </div>
+                        <button id="refresh-history-btn" class="btn btn-sm btn-ghost">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 4v6h-6"></path>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                    <th>Created At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-tbody">
+                                <tr><td colspan="7" class="text-center text-muted">Loading jobs...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
